@@ -1,0 +1,53 @@
+pipeline {
+    agent {
+        node {
+            label NODE
+        }
+    }
+    stages {
+        stage('准备执行目录'){
+            steps{
+                bat 'powershell New-Item-ItemType Directory-Force-Path %RUNNER_DIR%'
+            }
+        }
+        stage('拉取源码')
+            steps {
+                dir("$(RUNNER_DIR)"){
+                    script{
+                        iF(GIT_PULL == 'true'{
+                            checkout([
+                                $class:'GitSCM',
+                                branches:[[name: '*/'+GIT_BRANCH]],
+                                doGenerateSubmoduleConfigurations: false,
+                                extensions:[[$class:'RelativeTargetDirectory',
+                                relativeTargetDir: SRC_DIR]],
+                                submoduleCfg:[],
+                                userRemoteConfigs:[[url:GITREPOSITORY]]
+                            ])
+                        }
+                    }
+                }
+                dir("${RUNNER_DIR}${GIT_NAME}"){
+                    bat 'git submodule init'
+                    bat 'git submodule update --remote --recursive --force'
+                }
+            }
+        }
+        stage('记录执行作业信息'){
+            steps{
+                dir("${RUNNER_DIR}${GIT_NAME}"){
+                    script{
+                        writeFile file:'executeInfo.json',text:EXECUTE_INFO
+                    }
+                }
+            }
+        }
+        stage('执行测试'){
+            steps{
+                dir("${RUNNER_DIR}${GIT_NAME}"){
+                    bat '%RUN_CMD%'
+                }
+            }
+        }
+    }
+}

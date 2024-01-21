@@ -1,0 +1,15 @@
+[Unit]
+Description=hirunner pub jenkins node daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/data/jenkins
+# 以下的secret-file内容是从jenkins管理台增加节点时，分配的密钥内容
+ExecStart=/bin/java -jar agent.jar -jnlpUrl http://192.168.1.9:8080/computer/hirunner%5Fpub%5Fjenkins%Fnode/jenkins-agent.jnlp -secret @"/data/jenkins/secret-file" -workDir "/data/jenkins"
+ExecReload=/bin/kill -s hup $mainpid
+ExecStop=/bin/kill -s quit $mainpid
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
