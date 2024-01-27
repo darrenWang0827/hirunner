@@ -21,7 +21,7 @@ class TestPlanViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         product_id = request.data.get("productId")
         version_no = request.data.get("versionNo")
-        releasePlan = ReleasePlanTable.objects.get(product_id=product_id, version_no=version_no)
+        releasePlan = ReleasePlanTable.objects.get(product_id=product_id, name=version_no)
         data = dict(request.data)
         data["releasePlanId"] = releasePlan.release_plan_id
         serializer = self.get_serializer(data=data)
@@ -46,7 +46,7 @@ class TestPlanViewSet(ModelViewSet):
         if status in ["已开启", 1]:
             if crontab_switch in ["已开启", 1]:
                 run_user_nickname = "定时任务"
-                task_added = scheduler.add_job(func=run_testpLan_via_jenkins_engine,
+                task_added = scheduler.add_job(func=run_testPlan_via_jenkins_engine,
                                                trigger=CronTrigger.from_crontab(crontab_expression),
                                                id="testplan_" + str(id),
                                                args=[run_user_nickname, product_id, release_plan_id, id,
@@ -87,7 +87,7 @@ class TestPlanViewSet(ModelViewSet):
             except JobLookupError:
                 pass
             run_user_nickname = "定时任务"
-            task_added = scheduler.add_job(func=run_testpLan_via_jenkins_engine,
+            task_added = scheduler.add_job(func=run_testPlan_via_jenkins_engine,
                                            trigger=CronTrigger.from_crontab(crontab_expression),
                                            id="testplan_" + str(id),
                                            args=[run_user_nickname, product_id, release_plan_id, id,
@@ -117,7 +117,7 @@ class TestPlanViewSet(ModelViewSet):
         productId = request.GET.get("productId")
         releasePlanNameKw = request.GET.get("releasePlanNameKw")
         versionNo = request.GET.get("versionNo")
-        releasePlan = ReleasePlanTable.objects.filter(product_id=productId, releasePlanNameKw=releasePlanNameKw,
+        releasePlan = ReleasePlanTable.objects.filter(product_id=productId, release_plan_name_kw=releasePlanNameKw,
                                                       name=versionNo)
         if releasePlan:
             query = Q(release_plan_id = releasePlan[0].release_plan_id)

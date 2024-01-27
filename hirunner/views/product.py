@@ -28,7 +28,7 @@ class ProductViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        keyword = request.get("keyword")
+        keyword = request.GET.get("keyword")
         if keyword:
             queryset = ProductTable.objects.filter(
                 Q(name__icontains=keyword) | Q(release_plan_name_kw__icontains=keyword))
@@ -179,7 +179,7 @@ def product_version(request, *args, **kwargs):
     for product in products:
         data["productVersionList"].append({
             "productId": str(product.product_id),
-            "reLeasePlanNameKw": product.release_plan_name_kw,
+            "releasePlanNameKw": product.release_plan_name_kw,
             "productName": product.name,
             "versionList": list(ReleasePlanTable.objects.filter(product_id=product.product_id,
                                                                 release_plan_name_kw=product.release_plan_name_kw).order_by(
@@ -188,8 +188,8 @@ def product_version(request, *args, **kwargs):
     if data["productVersionList"]:
         data["curProductVersion"] = {
             "curProductId": str(products[0].product_id),
-            "curReleasePlanNameKw":str(products[0].reLease.planname.kw),
+            "curReleasePlanNameKw":str(products[0].release_plan_name_kw),
             "curProductName":products[0].name,
-            "curVersionNo":list(ReleasePlanTable.objects.filter(product_id=products.first().order_by('-version_no',flat=True)))[0]
+            "curVersionNo":list(ReleasePlanTable.objects.filter(product_id=products.first().product_id).order_by('-version_no').values_list('name',flat=True))[0]
         }
     return Response(data,status = status.HTTP_200_OK)
