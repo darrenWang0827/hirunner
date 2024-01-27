@@ -171,13 +171,13 @@ ASGI_APPLICATION = 'hirunnerbackend.asgi.application'  # ASGI应用配置
 CHANNEL_LAYERS = {
     "default": {
         # InMemoryChannelLayer 内存
-        # "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
 
         # RedisChannelLayer Redis（生产建议用这个）
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
+        # "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # "CONFIG": {
+        #     "hosts": [("127.0.0.1", 6379)],
+        # },
     }
 }
 # ---------------- websocket配置结束 ---------------------
