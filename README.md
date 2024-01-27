@@ -12,7 +12,7 @@
 
 ### 安装或配置jenkins  
 安装步骤略，请自行百度  
-关键配置:  
+流水线配置:  
 1.新建一个pipeline流水线，名称为hirunner_run_python_job  
 2.新建字符参数NODE，默认值为node-19.168.1.9(请自行根据情况变化,需要自行新建jenkins节点，并配置默认并行任务数来增加并发量)  
 3.新建字符参数GIT_REPOSITORY，默认值为你的git主工程地址  
@@ -24,7 +24,9 @@
 9.新建字符参数RUN_CMD,默认值为python3 run_test.py  
 10.新建文本参数EXECUTE_INFO,默认值为{"execute_id":"0"}  
 11.在高级项目选项中的流水线，定义选择Pipeline script  
-   脚本内容填写为  deploy/hirunner_run_python_job.pipeline
+&nbsp;&nbsp;&nbsp;&nbsp;脚本内容填写为  deploy/hirunner_run_python_job.pipeline  
+运行节点配置:  
+请自行查找资料解决
 
 
 ### redis(可选)
