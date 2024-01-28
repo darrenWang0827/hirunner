@@ -85,3 +85,5 @@ server {
 ![pics](README/testplanL.png) 
 4.执行历史记录  
 ![pics](README/history.png)
+5.jenkins执行输出
+![pics](README/jenkins.png)
