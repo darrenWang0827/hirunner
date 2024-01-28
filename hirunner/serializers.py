@@ -20,7 +20,7 @@ class CustomChoiceField(serializers.ChoiceField):
     def to_internal_value(self, data):
         """支持choice的key或value名称的写入"""
         for k, v in self._choices.items():
-            # 这样无论用户POST上来但是CHOICES的Key还是VaLUe都能被接受
+            # 这样无论用户POST上来但是CHOICES的Key还是Value都能被接受
             if k == data or str(k) == data or v == data:
                 return k
         raise serializers.ValidationError("Acceptable values are {0}.".format(list(self._choices.values())))
@@ -43,7 +43,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductPlanConfigSerializer(serializers.ModelSerializer):
     productId = serializers.IntegerField(source="product_id", required=True)
     productName = serializers.CharField(source="product_name", required=True)
-    releasePLanNameKw = serializers.CharField(source="release_plan_name_kw", allow_null=True, allow_blank=True)
+    releasePlanNameKw = serializers.CharField(source="release_plan_name_kw", allow_null=True, allow_blank=True)
     stage = CustomChoiceField(choices=Enum_test_plan_stage)
     planAlasName = serializers.CharField(source="plan_alias_name", required=True)
     gitRepository = serializers.CharField(source="git_repository", required=False, allow_null=True, allow_blank=True)
