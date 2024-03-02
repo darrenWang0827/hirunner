@@ -17,8 +17,6 @@ limit_request_line = 4096
 limit_request_fields = 100
 limit_request_fields_size = 8190
 
-.False
-
 reload = False
 daemon = False
 # max_requests = 1000
