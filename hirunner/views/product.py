@@ -61,7 +61,7 @@ class ProductViewSet(ModelViewSet):
         productName = request.data.get("name")
         pull_release_version_engine(product_id=productId, product_name=productName,
                                     release_plan_name_kw=releasePlanNameKw)
-        taskadded = scheduler.add_job(func=pull_release_version,
+        taskadded = scheduler.add_job(func=pull_release_version_engine,
                                       trigger=CronTrigger.from_crontab(settings.PRODUCT_PULL_VERSION_CRON),
                                       id="product_" + str(res_id),
                                       args=[productId, productName, releasePlanNameKw],
@@ -102,7 +102,7 @@ class ProductViewSet(ModelViewSet):
         finally:
             releasePlanNameKw = request.data.get("releasePlanNamekw")
             productName = request.data.get("name")
-            scheduler.add_job(func=pull_release_version,
+            scheduler.add_job(func=pull_release_version_engine,
                               trigger=CronTrigger.from_crontab(settings.PRODUCT_PULL_VERSION_CRON),
                               id="product_" + str(res_id),
                               args=[productId, productName, releasePlanNameKw],
