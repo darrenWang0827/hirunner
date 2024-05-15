@@ -9,8 +9,11 @@ pidfile=/tmp/gunicorn.pid
 #Group=ubuntu
 RuntimeDirectory=gunicorn
 WorkingDirectory=/data/app/hirunner-backend/
-ExecStart=/usr/local/Python3.10.8/bin/gunicorn -c /data/app/hirunner-backend/deploy.conf hirunnerbackend.wsgi:application
-ExecReload=/bin/kill -s hup $mainpid
+ExecStart=/usr/local/Python3.10.8/bin/python3 /data/app/hirunner-backend/manage.py runserver 0.0.0.0:8000
+StandardOutput=/data/app/hirunner-backend/logs/output.log
+StandardError=/data/app/hirunner-backend/logs/error.log
+#ExecStart=/usr/local/Python3.10.8/bin/gunicorn -c /data/app/hirunner-backend/deploy.conf hirunnerbackend.wsgi:application
+#ExecReload=/bin/kill -s hup $mainpid
 ExecStop=/bin/kill -s quit $mainpid
 PrivateTmp=true
 
